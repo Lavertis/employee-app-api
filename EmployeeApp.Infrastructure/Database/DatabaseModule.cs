@@ -8,7 +8,10 @@ public static class DatabaseModule
 {
     public static void AddDatabaseModule(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<EmployeeDbContext>(options => options.UseSqlServer(GetConnectionString(configuration)));
+        services.AddDbContext<EmployeeDbContext>(options => options.UseSqlServer(
+            GetConnectionString(configuration),
+            x => x.MigrationsAssembly("EmployeeApp.Infrastructure")
+        ));
     }
 
     private static string GetConnectionString(IConfiguration configuration)
