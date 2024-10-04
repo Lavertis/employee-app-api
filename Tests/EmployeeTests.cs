@@ -97,7 +97,7 @@ public class EmployeeTests : BaseTest
     public async Task CreateEmployeeCommandHandler_ReturnsBadRequest_ForInvalidRequest()
     {
         // Arrange
-        var createEmployeeRequest = new CreateEmployeeRequest();
+        var createEmployeeRequest = new CreateEmployeeRequest { FirstName = "John", LastName = "Doe" };
         var handler = new CreateEmployeeCommandHandler(Context, new CreateEmployeeRequestValidator(Context));
 
         // Act
@@ -135,7 +135,8 @@ public class EmployeeTests : BaseTest
         var handler = new UpdateEmployeeCommandHandler(Context, new UpdateEmployeeRequestValidator(Context));
 
         // Act
-        var result = await handler.Handle(new UpdateEmployeeCommand(employeeId, updateEmployeeRequest), CancellationToken.None);
+        var result = await handler.Handle(new UpdateEmployeeCommand(employeeId, updateEmployeeRequest),
+            CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);

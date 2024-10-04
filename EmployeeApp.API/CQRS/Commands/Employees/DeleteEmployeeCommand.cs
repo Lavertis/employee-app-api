@@ -39,6 +39,6 @@ public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComman
 
         _context.Employees.Remove(employee);
         await _context.SaveChangesAsync(cancellationToken);
-        return result.WithStatusCode(StatusCodes.Status200OK);
+        return result.WithStatusCode(StatusCodes.Status204NoContent);
     }
 }

@@ -7,5 +7,5 @@ public class Sex
     public Guid Id { get; set; }
 
     [MaxLength(32)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }

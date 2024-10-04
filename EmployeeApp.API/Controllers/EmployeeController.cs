@@ -17,7 +17,7 @@ public class EmployeeController : BaseController
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<PagedResponse<EmployeeListItemResponse>>> GetEmployeesAsync(
+    public async Task<ActionResult<IEnumerable<EmployeeListItemResponse>>> GetEmployeesAsync(
         [FromQuery] GetEmployeesQueryParams query)
         => CreateResponse(await Mediator.Send(new GetEmployeesQuery(query)));
 

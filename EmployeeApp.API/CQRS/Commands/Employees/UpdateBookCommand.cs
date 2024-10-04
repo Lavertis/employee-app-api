@@ -52,7 +52,7 @@ public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComman
 
         UpdateEmployee(employee, command.Request);
         await _context.SaveChangesAsync(cancellationToken);
-        return result.WithValue(Unit.Value);
+        return result.WithStatusCode(StatusCodes.Status204NoContent);
     }
 
     private static void UpdateEmployee(Employee employee, UpdateEmployeeRequest request)

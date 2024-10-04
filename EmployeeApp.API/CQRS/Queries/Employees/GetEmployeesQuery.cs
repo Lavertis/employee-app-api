@@ -1,5 +1,4 @@
 using AutoMapper;
-using EmployeeApp.API.Dto.Common;
 using EmployeeApp.API.Dto.Employee;
 using EmployeeApp.API.Dto.Result;
 using EmployeeApp.Infrastructure.Database;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeApp.API.CQRS.Queries.Employees;
 
-public class GetEmployeesQuery : IRequest<HttpResult<PagedResponse<EmployeeListItemResponse>>>
+public class GetEmployeesQuery : IRequest<HttpResult<IEnumerable<EmployeeListItemResponse>>>
 {
     public GetEmployeesQueryParams QueryParams { get; }
 
@@ -18,7 +17,7 @@ public class GetEmployeesQuery : IRequest<HttpResult<PagedResponse<EmployeeListI
     }
 }
 
-public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpResult<PagedResponse<EmployeeListItemResponse>>>
+public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpResult<IEnumerable<EmployeeListItemResponse>>>
 {
     private readonly EmployeeDbContext _context;
     private readonly IMapper _mapper;
@@ -29,10 +28,10 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpR
         _mapper = mapper;
     }
 
-    public async Task<HttpResult<PagedResponse<EmployeeListItemResponse>>> Handle(GetEmployeesQuery request,
+    public async Task<HttpResult<IEnumerable<EmployeeListItemResponse>>> Handle(GetEmployeesQuery request,
         CancellationToken cancellationToken)
     {
-        var result = new HttpResult<PagedResponse<EmployeeListItemResponse>>();
+        var result = new HttpResult<IEnumerable<EmployeeListItemResponse>>();
         var query = _context.Employees
             .Include(e => e.Sex);
 
@@ -42,14 +41,9 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpR
             .Select(e => _mapper.Map<EmployeeListItemResponse>(e))
             .ToListAsync(cancellationToken);
 
-        var pagedResponse = new PagedResponse<EmployeeListItemResponse>
-        {
-            PageNumber = request.QueryParams.Page,
-            PageSize = request.QueryParams.PageSize,
-            Records = employees,
-            TotalRecords = await query.CountAsync(cancellationToken)
-        };
-
-        return result.WithValue(pagedResponse);
+        var totalRecords = await query.CountAsync(cancellationToken);
+        return result
+            .WithPagination(request.QueryParams.Page, request.QueryParams.PageSize, totalRecords)
+            .WithValue(employees);
     }
 }

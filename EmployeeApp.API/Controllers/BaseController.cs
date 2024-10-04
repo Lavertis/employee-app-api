@@ -18,12 +18,23 @@ public abstract class BaseController : ControllerBase
 
     protected ActionResult<TValue> CreateResponse<TValue>(HttpResult<TValue> result)
     {
+        if (result.Pagination != null)
+        {
+            Response.Headers.Append(
+                "X-Pagination",
+                $"Page={result.Pagination.Page}," +
+                $"PageSize={result.Pagination.PageSize}," +
+                $"TotalCount={result.Pagination.TotalCount}," +
+                $"TotalPages={result.Pagination.TotalPages}"
+            );
+        }
+
         return result.StatusCode switch
         {
             >= 200 and < 300 => StatusCode(result.StatusCode, result.Value),
-            _ when result.IsError => StatusCode(result.StatusCode, new {Error = result.Error?.Message}),
-            _ when result.HasValidationErrors => StatusCode(result.StatusCode, new {Errors = result.ValidationErrors}),
-            _ => throw new Exception("Failed to created response")
+            _ when result.IsError => StatusCode(result.StatusCode, new { Error = result.Error?.Message }),
+            _ when result.HasValidationErrors => StatusCode(result.StatusCode, new { Errors = result.ValidationErrors }),
+            _ => throw new Exception("Failed to create response")
         };
     }
 }
