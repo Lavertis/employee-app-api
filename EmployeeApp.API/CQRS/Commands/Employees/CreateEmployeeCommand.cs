@@ -6,7 +6,7 @@ using EmployeeApp.Infrastructure.Database;
 using FluentValidation;
 using MediatR;
 
-namespace EmployeeApp.API.CQRS.Commands.Books;
+namespace EmployeeApp.API.CQRS.Commands.Employees;
 
 public class CreateEmployeeCommand : IRequest<HttpResult<IdResponse<Guid>>>
 {

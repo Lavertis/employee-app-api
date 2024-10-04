@@ -1,5 +1,6 @@
 using EmployeeApp.API.Config;
 using EmployeeApp.API.CQRS;
+using EmployeeApp.API.Mapper;
 using EmployeeApp.API.Middleware;
 using EmployeeApp.API.Validators;
 using EmployeeApp.Infrastructure.Database;
@@ -14,6 +15,7 @@ builder.Services.AddDatabaseModule(builder.Configuration);
 builder.Services.AddMiddlewareModule();
 builder.Services.AddMediatorModule();
 builder.Services.AddFluentValidators();
+builder.Services.AddAutoMapperModule();
 
 var app = builder.Build();
 await app.SeedDatabase();

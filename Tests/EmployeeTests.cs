@@ -1,4 +1,4 @@
-using EmployeeApp.API.CQRS.Commands.Books;
+using EmployeeApp.API.CQRS.Commands.Employees;
 using EmployeeApp.API.CQRS.Queries.Employees;
 using EmployeeApp.API.Dto.Employee;
 using EmployeeApp.API.Validators;
@@ -26,7 +26,7 @@ public class EmployeeTests : BaseTest
         );
         await Context.SaveChangesAsync();
 
-        var handler = new GetEmployeeQueryHandler(Context);
+        var handler = new GetEmployeeQueryHandler(Context, Mapper);
 
         // Act
         var result = await handler.Handle(new GetEmployeeQuery(employeeId), CancellationToken.None);
@@ -45,7 +45,7 @@ public class EmployeeTests : BaseTest
     public async Task GetEmployeeQueryHandler_ReturnsNotFound_ForNonExistingEmployee()
     {
         // Arrange
-        var handler = new GetEmployeeQueryHandler(Context);
+        var handler = new GetEmployeeQueryHandler(Context, Mapper);
 
         // Act
         var result = await handler.Handle(new GetEmployeeQuery(Guid.NewGuid()), CancellationToken.None);

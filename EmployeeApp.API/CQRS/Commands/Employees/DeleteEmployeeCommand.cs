@@ -3,7 +3,7 @@ using EmployeeApp.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeApp.API.CQRS.Commands.Books;
+namespace EmployeeApp.API.CQRS.Commands.Employees;
 
 public class DeleteEmployeeCommand : IRequest<HttpResult<Unit>>
 {

@@ -1,6 +1,6 @@
+using AutoMapper;
 using EmployeeApp.API.Dto.Employee;
 using EmployeeApp.API.Dto.Result;
-using EmployeeApp.API.Dto.Sex;
 using EmployeeApp.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,35 +20,30 @@ public class GetEmployeeQuery : IRequest<HttpResult<EmployeeDetailsResponse>>
 public class GetEmployeeQueryHandler : IRequestHandler<GetEmployeeQuery, HttpResult<EmployeeDetailsResponse>>
 {
     private readonly EmployeeDbContext _context;
+    private readonly IMapper _mapper;
 
-    public GetEmployeeQueryHandler(EmployeeDbContext context)
+    public GetEmployeeQueryHandler(EmployeeDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<HttpResult<EmployeeDetailsResponse>> Handle(GetEmployeeQuery request,
         CancellationToken cancellationToken)
     {
         var result = new HttpResult<EmployeeDetailsResponse>();
-        var book = await _context.Employees
+        var employee = await _context.Employees
             .Include(e => e.Sex)
-            .Select(e => new EmployeeDetailsResponse
-            {
-                Id = e.Id,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                Age = e.Age,
-                Sex = new SexResponse{Id = e.Sex.Id, Name = e.Sex.Name}
-            })
             .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
-        if (book == null)
+        if (employee == null)
         {
             return result
-                .WithError(new Error { Message = "Book not found" })
+                .WithError(new Error { Message = "Employee not found" })
                 .WithStatusCode(StatusCodes.Status404NotFound);
         }
-
-        return result.WithValue(book);
+        
+        var employeeResponse = _mapper.Map<EmployeeDetailsResponse>(employee);
+        return result.WithValue(employeeResponse);
     }
 }

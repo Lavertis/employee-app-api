@@ -19,7 +19,7 @@ public class SexTests: BaseTest
         );
         await Context.SaveChangesAsync();
 
-        var handler = new GetSexesQueryHandler(Context);
+        var handler = new GetSexesQueryHandler(Context, Mapper);
 
         // Act
         var result = await handler.Handle(new GetSexesQuery(), CancellationToken.None);

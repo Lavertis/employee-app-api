@@ -1,3 +1,4 @@
+using AutoMapper;
 using EmployeeApp.API.Dto.Common;
 using EmployeeApp.API.Dto.Employee;
 using EmployeeApp.API.Dto.Result;
@@ -20,10 +21,12 @@ public class GetEmployeesQuery : IRequest<HttpResult<PagedResponse<EmployeeListI
 public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpResult<PagedResponse<EmployeeListItemResponse>>>
 {
     private readonly EmployeeDbContext _context;
+    private readonly IMapper _mapper;
 
-    public GetEmployeesQueryHandler(EmployeeDbContext context)
+    public GetEmployeesQueryHandler(EmployeeDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<HttpResult<PagedResponse<EmployeeListItemResponse>>> Handle(GetEmployeesQuery request,
@@ -36,14 +39,7 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpR
         var employees = await query
             .Skip((request.QueryParams.Page - 1) * request.QueryParams.PageSize)
             .Take(request.QueryParams.PageSize)
-            .Select(e => new EmployeeListItemResponse
-            {
-                Id = e.Id,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                Age = e.Age,
-                Sex = e.Sex.Name
-            })
+            .Select(e => _mapper.Map<EmployeeListItemResponse>(e))
             .ToListAsync(cancellationToken);
 
         var pagedResponse = new PagedResponse<EmployeeListItemResponse>

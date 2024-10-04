@@ -6,7 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeApp.API.CQRS.Commands.Books;
+namespace EmployeeApp.API.CQRS.Commands.Employees;
 
 public class UpdateEmployeeCommand : IRequest<HttpResult<Unit>>
 {
@@ -46,7 +46,7 @@ public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeComman
         if (employee == null)
         {
             return result
-                .WithError(new Error { Message = "Book not found" })
+                .WithError(new Error { Message = "Employee not found" })
                 .WithStatusCode(StatusCodes.Status404NotFound);
         }
 
