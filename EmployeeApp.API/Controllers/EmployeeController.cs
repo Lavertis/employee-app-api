@@ -10,12 +10,8 @@ namespace EmployeeApp.API.Controllers;
 
 [ApiController]
 [Route("api/employees")]
-public class EmployeeController : BaseController
+public class EmployeeController(IMediator mediator) : BaseController(mediator)
 {
-    public EmployeeController(IMediator mediator) : base(mediator)
-    {
-    }
-
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<EmployeeListItemResponse>>> GetEmployeesAsync(
@@ -41,13 +37,9 @@ public class EmployeeController : BaseController
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<Unit>> UpdateEmployeeByIdAsync([FromRoute] Guid employeeId, [FromBody] UpdateEmployeeRequest request)
         => CreateResponse(await Mediator.Send(new UpdateEmployeeCommand(employeeId, request)));
-
-    [HttpDelete("{employeeId:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult<Unit>> DeleteEmployeeAsync([FromRoute] Guid employeeId)
-        => CreateResponse(await Mediator.Send(new DeleteEmployeeCommand(employeeId)));
     
-    [HttpPost("bulk-delete")]
+    [HttpDelete]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<Unit>> DeleteEmployeesAsync([FromBody] BulkDeleteEmployeesRequest request)
         => CreateResponse(await Mediator.Send(new DeleteEmployeesCommand(request)));

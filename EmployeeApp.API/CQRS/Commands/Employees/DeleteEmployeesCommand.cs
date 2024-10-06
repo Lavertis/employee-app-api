@@ -47,13 +47,13 @@ public class DeleteEmployeesCommandHandler : IRequestHandler<DeleteEmployeesComm
                 .WithError(new Error { Message = "Request contains duplicate Ids" })
                 .WithStatusCode(StatusCodes.Status400BadRequest);
         }
-
-        var notFoundEmployeeIds = await _context.Employees
+        
+        var foundEmployeeIds = await _context.Employees
             .Where(b => request.Ids.Contains(b.Id))
             .Select(b => b.Id)
-            .Except(request.Ids)
             .ToListAsync(cancellationToken);
 
+        var notFoundEmployeeIds = request.Ids.Except(foundEmployeeIds).ToList();
         if (notFoundEmployeeIds.Count != 0)
         {
             return result
@@ -62,6 +62,6 @@ public class DeleteEmployeesCommandHandler : IRequestHandler<DeleteEmployeesComm
                 .WithStatusCode(StatusCodes.Status404NotFound);
         }
 
-        return result;
+        return result.WithStatusCode(StatusCodes.Status204NoContent);
     }
 }

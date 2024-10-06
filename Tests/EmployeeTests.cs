@@ -167,10 +167,11 @@ public class EmployeeTests : BaseTest
             new Employee { Id = employeeId, FirstName = firstName, LastName = lastName, Age = age, SexId = sexId }
         );
         await Context.SaveChangesAsync();
-        var handler = new DeleteEmployeeCommandHandler(Context);
+        var handler = new DeleteEmployeesCommandHandler(Context);
+        var request = new BulkDeleteEmployeesRequest{EmployeeIds = new List<Guid> { employeeId }};
 
         // Act
-        var result = await handler.Handle(new DeleteEmployeeCommand(employeeId), CancellationToken.None);
+        var result = await handler.Handle(new DeleteEmployeesCommand(request), CancellationToken.None);
 
         // Assert
         Assert.NotNull(result);

@@ -7,14 +7,9 @@ namespace EmployeeApp.API.Controllers;
 [ApiController]
 [Produces("application/json")]
 [Consumes("application/json")]
-public abstract class BaseController : ControllerBase
+public abstract class BaseController(IMediator mediator) : ControllerBase
 {
-    protected readonly IMediator Mediator;
-
-    protected BaseController(IMediator mediator)
-    {
-        Mediator = mediator;
-    }
+    protected readonly IMediator Mediator = mediator;
 
     protected ActionResult<TValue> CreateResponse<TValue>(HttpResult<TValue> result)
     {
@@ -32,6 +27,7 @@ public abstract class BaseController : ControllerBase
 
         return result.StatusCode switch
         {
+            204 => StatusCode(result.StatusCode),
             >= 200 and < 300 => StatusCode(result.StatusCode, result.Value),
             _ when result.IsError => StatusCode(result.StatusCode, new { Error = result.Error?.Message }),
             _ when result.HasValidationErrors => StatusCode(result.StatusCode, new { Errors = result.ValidationErrors }),
