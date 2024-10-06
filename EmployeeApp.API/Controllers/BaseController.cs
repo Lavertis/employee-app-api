@@ -22,11 +22,12 @@ public abstract class BaseController : ControllerBase
         {
             Response.Headers.Append(
                 "X-Pagination",
-                $"Page={result.Pagination.Page}," +
-                $"PageSize={result.Pagination.PageSize}," +
-                $"TotalCount={result.Pagination.TotalCount}," +
-                $"TotalPages={result.Pagination.TotalPages}"
+                $"page={result.Pagination.Page}," +
+                $"pageSize={result.Pagination.PageSize}," +
+                $"totalCount={result.Pagination.TotalCount}," +
+                $"totalPages={result.Pagination.TotalPages}"
             );
+            Response.Headers.Append("Access-Control-Expose-Headers", "X-Pagination");
         }
 
         return result.StatusCode switch

@@ -19,7 +19,7 @@ public static class AutoMapperModule
         {
             options.CreateMap<Sex, SexResponse>();
             options.CreateMap<Employee, EmployeeDetailsResponse>();
-            options.CreateMap<Employee, EmployeeListItemResponse>();
+            options.CreateMap<Employee, EmployeeListItemResponse>().ForMember(e => e.Sex, opt => opt.MapFrom(e => e.Sex!.Name));
         });
 
         var mapper = mapperConfiguration.CreateMapper();

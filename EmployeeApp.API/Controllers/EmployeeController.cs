@@ -45,4 +45,9 @@ public class EmployeeController : BaseController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult<Unit>> DeleteEmployeeAsync(Guid employeeId)
         => CreateResponse(await Mediator.Send(new DeleteEmployeeCommand(employeeId)));
+    
+    [HttpPost("bulk-delete")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult<Unit>> DeleteEmployeesAsync(IList<Guid> employeeIds)
+        => CreateResponse(await Mediator.Send(new DeleteEmployeesCommand(employeeIds)));
 }

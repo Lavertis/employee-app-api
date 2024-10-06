@@ -36,6 +36,7 @@ public class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, HttpR
             .Include(e => e.Sex);
 
         var employees = await query
+            .OrderBy(e => e.Id)
             .Skip((request.QueryParams.Page - 1) * request.QueryParams.PageSize)
             .Take(request.QueryParams.PageSize)
             .Select(e => _mapper.Map<EmployeeListItemResponse>(e))

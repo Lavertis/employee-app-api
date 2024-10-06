@@ -33,12 +33,27 @@ namespace EmployeeApp.Infrastructure.Database.Seeders
         private async Task SeedEmployees()
         {
             var sexes = _context.Sexes.ToList();
-            var employees = new List<Employee>
+            var firstNames = new List<string> { "John", "Jane", "Alex", "Chris", "Pat", "Taylor", "Jordan", "Morgan", "Casey", "Riley" };
+            var lastNames = new List<string> { "Doe", "Smith", "Johnson", "Brown", "Williams", "Jones", "Garcia", "Miller", "Davis", "Rodriguez" };
+            var random = new Random();
+            var employees = new List<Employee>();
+
+            for (var i = 0; i < 100; i++)
             {
-                new() { FirstName = "John", LastName = "Doe", Age = 23, Sex = sexes[0] },
-                new() { FirstName = "Jane", LastName = "Doe", Age = 28, Sex = sexes[1] },
-                new() { FirstName = "Alex", LastName = "Smith", Age = 35, Sex = sexes[2] },
-            };
+                var firstName = firstNames[random.Next(firstNames.Count)];
+                var lastName = lastNames[random.Next(lastNames.Count)];
+                var age = random.Next(20, 60);
+                var sex = sexes[random.Next(sexes.Count)];
+
+                employees.Add(new Employee
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Age = age,
+                    Sex = sex
+                });
+            }
+
             await _context.AddRangeAsync(employees);
             await _context.SaveChangesAsync();
         }
