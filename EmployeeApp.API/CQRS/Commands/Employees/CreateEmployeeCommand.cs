@@ -1,5 +1,5 @@
 using EmployeeApp.API.Dto.Common;
-using EmployeeApp.API.Dto.Employee;
+using EmployeeApp.API.Dto.Employee.Requests;
 using EmployeeApp.API.Dto.Result;
 using EmployeeApp.Domain.Entities;
 using EmployeeApp.Infrastructure.Database;

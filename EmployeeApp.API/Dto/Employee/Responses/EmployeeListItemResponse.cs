@@ -1,4 +1,4 @@
-namespace EmployeeApp.API.Dto.Employee;
+namespace EmployeeApp.API.Dto.Employee.Responses;
 
 public class EmployeeListItemResponse
 {

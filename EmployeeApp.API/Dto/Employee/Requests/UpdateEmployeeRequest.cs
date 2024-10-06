@@ -1,4 +1,4 @@
-namespace EmployeeApp.API.Dto.Employee;
+namespace EmployeeApp.API.Dto.Employee.Requests;
 
 public class UpdateEmployeeRequest
 {

@@ -1,4 +1,4 @@
-using EmployeeApp.API.Dto.Employee;
+using EmployeeApp.API.Dto.Employee.Requests;
 using EmployeeApp.Infrastructure.Database;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

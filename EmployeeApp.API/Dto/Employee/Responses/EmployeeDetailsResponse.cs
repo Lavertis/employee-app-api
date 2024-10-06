@@ -1,6 +1,6 @@
 using EmployeeApp.API.Dto.Sex;
 
-namespace EmployeeApp.API.Dto.Employee;
+namespace EmployeeApp.API.Dto.Employee.Responses;
 
 public class EmployeeDetailsResponse
 {

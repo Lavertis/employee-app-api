@@ -1,3 +1,4 @@
+using EmployeeApp.API.Dto.Employee.Requests;
 using EmployeeApp.API.Dto.Result;
 using EmployeeApp.Infrastructure.Database;
 using MediatR;
@@ -9,9 +10,9 @@ public class DeleteEmployeesCommand : IRequest<HttpResult<Unit>>
 {
     public IList<Guid> Ids { get; }
 
-    public DeleteEmployeesCommand(IList<Guid> ids)
+    public DeleteEmployeesCommand(BulkDeleteEmployeesRequest request)
     {
-        Ids = ids;
+        Ids = request.EmployeeIds;
     }
 }
 

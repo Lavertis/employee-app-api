@@ -1,6 +1,6 @@
 using EmployeeApp.API.CQRS.Commands.Employees;
 using EmployeeApp.API.CQRS.Queries.Employees;
-using EmployeeApp.API.Dto.Employee;
+using EmployeeApp.API.Dto.Employee.Requests;
 using EmployeeApp.API.Validators;
 using EmployeeApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

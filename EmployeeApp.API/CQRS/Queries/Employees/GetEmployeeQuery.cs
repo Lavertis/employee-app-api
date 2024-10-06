@@ -1,5 +1,5 @@
 using AutoMapper;
-using EmployeeApp.API.Dto.Employee;
+using EmployeeApp.API.Dto.Employee.Responses;
 using EmployeeApp.API.Dto.Result;
 using EmployeeApp.Infrastructure.Database;
 using MediatR;
